@@ -1,3 +1,4 @@
+--------------------------------------------------------------------------------c++-----------------------------------------------------------------------------------
 //Approach-1 (Using Recursion + Memo) using Linear Search for next event - T.C. - O(n⋅k⋅n) 
 class Solution {
 public:
@@ -79,3 +80,88 @@ public:
         return solve(events, 0, k);
     }
 };
+
+-----------------------------------------------------------------------------java------------------------------------------------------------------------------------
+
+class Solution {
+    int n;
+    int[][] t;
+
+    public int solve(int[][] events, int i, int k) {
+        if (k <= 0 || i >= n)
+            return 0;
+
+        if (t[i][k] != -1)
+            return t[i][k];
+
+        int start = events[i][0];
+        int end = events[i][1];
+        int value = events[i][2];
+
+        // Finding the next event we can attend
+        int j = i + 1;
+        while (j < n && events[j][0] <= end) {
+            j++;
+        }
+
+        int take = value + solve(events, j, k - 1);
+        int skip = solve(events, i + 1, k);
+
+        return t[i][k] = Math.max(take, skip);
+    }
+
+    public int maxValue(int[][] events, int k) {
+        Arrays.sort(events, (a, b) -> Integer.compare(a[0], b[0]));
+
+        n = events.length;
+
+        t = new int[n + 1][k + 1];
+        for (int[] row : t) {
+            Arrays.fill(row, -1);
+        }
+
+        return solve(events, 0, k);
+    }
+}
+
+2nd approach - 
+class Solution {
+    int n;
+    int[][] t;
+
+    public int solve(int[][] events, int i, int k) {
+        if (k <= 0 || i >= n)
+            return 0;
+
+        if (t[i][k] != -1)
+            return t[i][k];
+
+        int start = events[i][0];
+        int end = events[i][1];
+        int value = events[i][2];
+
+        // Finding the next event we can attend
+        int j = i + 1;
+        while (j < n && events[j][0] <= end) {
+            j++;
+        }
+
+        int take = value + solve(events, j, k - 1);
+        int skip = solve(events, i + 1, k);
+
+        return t[i][k] = Math.max(take, skip);
+    }
+
+    public int maxValue(int[][] events, int k) {
+        Arrays.sort(events, (a, b) -> Integer.compare(a[0], b[0]));
+
+        n = events.length;
+
+        t = new int[n + 1][k + 1];
+        for (int[] row : t) {
+            Arrays.fill(row, -1);
+        }
+
+        return solve(events, 0, k);
+    }
+}
